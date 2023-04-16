@@ -21,7 +21,7 @@
  * 11. import googleAuthProvider and create a new provider 
  * 12. use signInWithPopUp and pass auth and provider 
  *     - fetch & cath error
- * 13. activate sign-in method (google, facebook, github, etc.) in Authorization menu
+ * 13. activate sign-in method (google, facebook, github, etc.) in Authentication menu
  * 14. [vite]: change 127.0.0.1 to localhost
  * 
  * ----------------------
