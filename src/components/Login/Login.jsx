@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
 import app from '../../firebaseinit';
 
 
 const Login = () => {
-    const [user, setUser] = useState([null]);
+    const [user, setUser] = useState(null);
     const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
 
 
     const handleGoogleSignIn = () => {
         console.log('Google Coming');
-        signInWithPopup(auth, provider)
+        signInWithPopup(auth, googleProvider)
             .then(result => {
                 const loggedInUser = result.user;
                 console.log(loggedInUser);
@@ -23,6 +24,16 @@ const Login = () => {
             })
     }
 
+    const handleGithubSignIn = () => {
+        signInWithPopup(auth, githubProvider)
+        .then( result => {
+            const loggedInUser = result.user;
+            setUser(loggedInUser)
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
     const handleSignOut = () => {
         signOut(auth)
@@ -36,16 +47,22 @@ const Login = () => {
 
 
     return (
-        <div>
-            <button onClick={handleSignOut}>Sign Out</button>
-            <button onClick={handleGoogleSignIn}>Login with Google</button>
+        <div style={{ marginTop: '20px' }}>
+            {
+                user ?
+                    <button style={{ backgroundColor: 'red', color: 'white' }} onClick={handleSignOut}>Sign Out</button> :
+                    <>
+                        <button style={{ backgroundColor: '#0F9D58', color: 'white', marginRight: '10px' }} onClick={handleGoogleSignIn}>Login with Google</button>
+                        <button style={{ backgroundColor: 'black', color: 'white' }} onClick={handleGithubSignIn}>Login with GitHub</button>
+                    </>
+            }
 
 
 
 
             {
                 user &&
-                <div>
+                <div style={{ marginTop: '10px' }}>
                     <img src={user.photoURL} alt="" />
                     <h3>User: {user.displayName}</h3>
                     <p>Email: {user.email}</p>
